@@ -1,13 +1,9 @@
 import streamlit as st
 
-# Add a selectbox to the sidebar:
-add_selectbox = st.sidebar.selectbox(
-    'How would you like to be contacted?',
-    ('Email', 'Home phone', 'Mobile phone')
-)
+if "counter" not in st.session_state:
+    st.session_state.counter = 0
 
-# Add a slider to the sidebar:
-add_slider = st.sidebar.slider(
-    'Select a range of values',
-    0.0, 100.0, (25.0, 75.0)
-)
+st.session_state.counter += 1
+
+st.header(f"This page has run {st.session_state.counter} times.")
+st.button("Run it again")
