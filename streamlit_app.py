@@ -122,13 +122,13 @@ def parser(url: str, low_price: int = 1, top_price: int = 1000000, discount: int
     except Exception as e:
         print(f'Неизвестная ошибка: {e}')
 
-
+df = None
 st.set_page_config(layout="wide", page_icon='⚡', page_title="Parser Wildberries")
 
 with st.sidebar:
     url = st.text_input(label="Вставьте ссылку", placeholder="https://www.wildberries.ru/catalog/muzhchinam/bele", help="Ссылка на каталог Wildberries")
-    low_price = st.number_input(label="Минимальная цена", min_value=1, max_value=1000000, value=1)
-    top_price = st.number_input(label="Максимальная цена", min_value=1, max_value=1000000, value=1)
+    low_price = st.number_input(label="Минимальная цена", min_value=1, max_value=1000000, value=300)
+    top_price = st.number_input(label="Максимальная цена", min_value=1, max_value=1000000, value=900)
     discount = st.slider("Скидка", 0, 100, value=0, help="0 - без скидки")
 
 with st.sidebar:
@@ -148,10 +148,15 @@ if submit and url == "":
         st.warning("Укажите ссылку на каталог")
 
 # if user input is not empty and button is clicked then generate slides
-elif submit and response_df is not None:
+elif submit:
     with ui_container:
         with st.spinner('Загрузка ...⏳'):
 
             try:
+                data = parser(url=url, low_price=low_price, top_price=top_price, discount=discount)
+                df = pd.DataFrame(data)
+                st.table(df)
+            except:
+                    pass
                 
                 
