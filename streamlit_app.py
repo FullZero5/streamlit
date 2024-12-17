@@ -45,7 +45,7 @@ def get_data_from_json(json_file: dict) -> list:
     data_list = []
     products = json_file.get('data', {}).get('products', [])
     if not products:
-        logging.warning('Внимание: нет данных для обработки.')
+        print('Внимание: нет данных для обработки.')
     for product in products:
         data_list.append({
             'id': product.get('id'),
