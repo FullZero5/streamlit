@@ -5,7 +5,6 @@ import json
 import pandas as pd
 from retry import retry
 
-
 def get_catalogs_wb() -> dict:
     """получаем полный каталог Wildberries"""
     url = 'https://static-basket-01.wbbasket.ru/vol0/data/main-menu-ru-ru-v3.json'
@@ -151,12 +150,86 @@ if submit and url == "":
 elif submit:
     with ui_container:
         with st.spinner('Загрузка ...⏳'):
-
+            
             try:
                 data = parser(url=url, low_price=low_price, top_price=top_price, discount=discount)
                 df = pd.DataFrame(data)
-                st.table(df)
+                st.dataframe(
+                    df,
+                    column_config={
+                        "id": st.column_config.NumberColumn(
+                           "Артикул",
+                           help="Артикул товара",
+                           format="%d" 
+                        ),
+                        "name": st.column_config.TextColumn(
+                            "Название",
+                            help="Название товара",
+                        ),
+                        "price": st.column_config.NumberColumn(
+                            "Цена",
+                            help="Цена товара",
+                            format="%d ₽",
+                        ),
+                        "salePriceU": st.column_config.NumberColumn(
+                            "Цена со скидкой",
+                            help="Цена со скидкой товара",
+                            format="%d ₽",
+                        ),
+                        "cashback": st.column_config.NumberColumn(
+                            "Кэшбэк",
+                            help="Кэшбэк товара",
+                            format="%d ₽",
+                        ),
+                        "sale": st.column_config.NumberColumn(
+                            "Скидка",
+                            help="Скидка товара",
+                            format="%d %%",
+                        ),
+                        "brand": st.column_config.TextColumn(
+                            "Бренд",
+                            help="Бренд товара",
+                        ),
+                        "rating": st.column_config.NumberColumn(
+                            "Рейтинг",
+                            help="Рейтинг товара",
+                            format="%d ⭐",
+                        ),
+                        "supplier": st.column_config.TextColumn(
+                            "Поставщик",
+                            help="Поставщик товара",
+                        ),
+                        "supplierRating": st.column_config.NumberColumn(
+                            "Рейтинг поставщика",
+                            help="Рейтинг поставщика товара",
+                            format="%d ⭐",
+                        ),
+                        "feedbacks": st.column_config.NumberColumn(
+                            "Всего отзывов",
+                            help="Отзывы о товаре",
+                            format="%d",
+                        ),
+                        "reviewRating": st.column_config.ProgressColumn(
+                            "Рейтинг товара",
+                            help="Рейтинг отзывов о товаре",
+                            format="%d ⭐",
+                            max_value=5,
+                            min_value=0
+                        ),
+                        "promoTextCard": st.column_config.TextColumn(
+                            "Текст промо-карты",
+                            help="Текст промо-карты товара",
+                        ),
+                        "promoTextCat": st.column_config.TextColumn(
+                            "Текст промо-карты категории",
+                            help="Текст промо-карты категории товара",
+                        ),
+                        "link": st.column_config.LinkColumn("Ссылка", help="Ссылка на товар", display_text="Ссылка")
+                    },
+                    hide_index=True,
+                    use_container_width=True
+                )
             except:
-                    pass
+                pass
                 
                 
